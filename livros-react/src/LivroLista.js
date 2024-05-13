@@ -36,7 +36,7 @@ function LivroLista() {
           <tbody>
             {livros.map((livro) => (
               <LinhaLivro
-                key={livro.id}
+                key={livro.codigo}
                 livro={livro}
                 controleLivros={controleLivros}
                 controleEditora={controleEditora}
