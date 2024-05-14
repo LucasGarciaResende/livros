@@ -10,7 +10,7 @@ class ControleLivros {
     obterLivros(): Promise<Array<Livro>> {
         return Promise.resolve(livros);
     }
-    async incluir(livro: Livro) {
+    incluir(livro: Livro) {
         livro.codigo = livros.length + 1;
         livros.push(livro);
     }

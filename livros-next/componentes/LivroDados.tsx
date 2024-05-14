@@ -31,7 +31,7 @@ const LivroDados: NextPage = () => {
             codEditora,
             autores: autores.split("\n")
         }
-        controleLivro.incluir(livro);
+        incluirLivro(livro);
         Router.push("LivroLista");
     }
 
@@ -50,7 +50,7 @@ const LivroDados: NextPage = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="resumo">Resumo:</label>
-                        <textarea onChange={(event) => setResumo(event.target.value)} className="form-control"></textarea>   
+                        <textarea cols={30} rows={3} onChange={(event) => setResumo(event.target.value)} className="form-control"></textarea>   
                     </div>
                     <div className="form-group">
                         <label htmlFor="codEditora">Editora:</label>
@@ -69,7 +69,7 @@ const LivroDados: NextPage = () => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="autores">Autores:</label>
-                        <textarea onChange={(event) => setAutores(event.target.value)} className="form-control"></textarea>
+                        <textarea cols={30} rows={3} onChange={(event) => setAutores(event.target.value)} className="form-control"></textarea>
                     </div>
                     <div className="form-group">
                         <button type="submit" className="botao">Salvar Dados</button>
