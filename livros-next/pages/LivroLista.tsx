@@ -5,6 +5,7 @@ import Livro from  '../classes/modelo/Livro';
 import {useEffect, useState} from 'react';
 import {Menu} from '../componentes/Menu';
 import {LinhaLivro} from '../componentes/LinhaLivro';
+import Head from 'next/head';
 
 
 const LivroLista: NextPage = () => {
@@ -26,10 +27,10 @@ const LivroLista: NextPage = () => {
     };
 
     return (
-        <div className={styles.container}>
-          <head>
+        <div className={styles.container} suppressHydrationWarning>
+          <Head>
             <title>Loja Next</title>
-          </head>
+          </Head>
           <Menu />
           <main>
             <h1>Catalogo de Livros</h1>
@@ -43,13 +44,13 @@ const LivroLista: NextPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {livros.map((livro) => (
+                    {Array.isArray(livros) && livros.map((livro) => (
                         <LinhaLivro
                             key={livro.codigo}
                             livro={livro}
                             excluir={excluir} 
                         />
-            ))}
+                    ))}
                 </tbody>
             </table>
           </main>
@@ -57,6 +58,8 @@ const LivroLista: NextPage = () => {
       );
     };
 
+export default LivroLista;
+    
 const baseURL: string = 'http://localhost:3000/api/livros';
 
 const obter = async () => {
