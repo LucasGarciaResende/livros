@@ -6,7 +6,7 @@ export const Menu: React.FC = () => {
         <nav className="navbar navbar-custom navbar-expand-lg menu">
             <Link href="/" className="navbar-brand item-nav">Home</Link>
             <Link href="/LivroLista" className="navbar-brand item-nav">Catálago</Link>
-            <Link href="/componentes/LivroDados" className="navbar-brand item-nav">Novo</Link>
+            <Link href="/LivroDados" className="navbar-brand item-nav">Novo</Link>
         </nav>
     );
 }

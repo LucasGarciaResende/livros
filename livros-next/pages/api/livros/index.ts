@@ -1,21 +1,22 @@
-import ControleLivros from "@/classes/controle/ControleLivros";
-import {NextApiRequest, NextApiResponse} from "next";
+import {NextApiRequest, NextApiResponse} from 'next';
+import ControleLivro from '../../../classes/controle/ControleLivros';
 
-export const controleLivro: ControleLivros = new ControleLivros();
+const controleLivro = new ControleLivro();
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
     if (req.method === 'GET') {
-        const livro = controleLivro.obterLivros();
-        res.status(200).json(livro);
+      const livros = await controleLivro.obterLivros();
+      res.status(200).json(livros);
     } else if (req.method === 'POST') {
-        try {
-          const dados = req.body.livro;
-          const livro = controleLivro.incluir(dados);
-          res.status(200).json(livro);
-        } catch (error) {
-          res.status(500).end("Execução ocorrida no servidor.");
-      }
+      const livro = req.body;
+      await controleLivro.incluir(livro);
+      res.status(200).json({message: 'Livro incluído com sucesso!'});
     } else {
-        res.status(405).end("Método não permitido.");
+      res.setHeader('Allow', ['GET', 'POST']);
+      res.status(405).end("Método não permitido");
     }
+  } catch (error) {
+    res.status(500).json({error: "Erro no Servidor"});
+  }
 };

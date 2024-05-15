@@ -1,18 +1,18 @@
-import ControleEditora from "@/classes/controle/ControleEditora";
-import { NextApiRequest, NextApiResponse } from "next";
+import {NextApiRequest, NextApiResponse} from 'next';
+import ControleEditora from '../../../classes/controle/ControleEditora';
 
-export const controleEditora: ControleEditora = new ControleEditora();
+const controleEditora = new ControleEditora();
 
-export default (req: NextApiRequest, res: NextApiResponse) => { 
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
     if (req.method === 'GET') {
-        try {
-            const editoras: Array<object> = controleEditora.getEditoras();
-            res.status(200).json(editoras);
-        } catch (error) {
-            res.status(500).end("Execução ocorrida no servidor.");
-        }
+      const editoras = await controleEditora.getEditoras();
+      res.status(200).json(editoras);
     } else {
-        res.status(405).end("Método não permitido.");
-    };
-}
-
+      res.setHeader('Allow', ['GET']);
+      res.status(405).end("Método não permitido");
+    }
+  } catch (error) {
+    res.status(500).json({error: "Erro no Servidor"});
+  }
+};

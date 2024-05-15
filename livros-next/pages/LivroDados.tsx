@@ -2,14 +2,13 @@ import type {NextPage} from 'next';
 import styles from '../styles/Home.module.css'
 import Livro from  '../classes/modelo/Livro';
 import {useState} from 'react';
-import { useRouter } from 'next/router';
-import {useNavigate, } from "react-router-dom";
+import {useRouter} from 'next/router';
 import ControleEditora from '../classes/controle/ControleEditora';
 import ControleLivros from '../classes/controle/ControleLivros';
 import {Menu} from '../componentes/Menu'
 import Head from 'next/head';
 
-const baseUrl = "http://localhost:3000/api/livros";
+const baseURL = "http://localhost:3000/api/livros";
 const LivroDados: NextPage = () => {
     let controleLivro = new ControleLivros();
     let controleEditora = new ControleEditora();
@@ -22,19 +21,18 @@ const LivroDados: NextPage = () => {
     let tratarCombo = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCodEditora(Number(event.target.value));
     }
-    let incluir = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        let livro = {
+    let incluir = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        const livro: Livro = {
             codigo: 0,
-            titulo,
-            resumo,
-            codEditora,
-            autores: autores.split("\n")
-        }
-        incluirLivro(livro);
-        Router.push("/LivroLista");
-    }
-
+            titulo: titulo,
+            resumo: resumo,
+            autores: autores.split('\n'),
+            codEditora: codEditora,
+        };
+        const incluindo = await incluirLivro(livro);
+        if (incluindo) Router.push('/LivroLista');
+    };
     return (
         <div className={styles.container}>
             <Head>
@@ -83,12 +81,14 @@ const LivroDados: NextPage = () => {
 export default LivroDados;
 
 const incluirLivro = async (livro: Livro) => {
-    const dadosLivros = await fetch(baseUrl, {
+    const resposta = await fetch(baseURL, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(livro)
+        body: JSON.stringify(livro),
     });
-    return dadosLivros.ok;
+    return resposta.ok;
 }
+
+

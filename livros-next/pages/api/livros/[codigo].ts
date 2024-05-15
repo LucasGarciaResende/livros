@@ -1,16 +1,19 @@
-import {controleLivro} from ".";
-import {NextApiRequest, NextApiResponse} from "next";
+import {NextApiRequest, NextApiResponse} from 'next';
+import ControleLivro from '../../../classes/controle/ControleLivros';
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+const controleLivro = new ControleLivro();
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
     if (req.method === 'DELETE') {
-        try {
-            const {codigo} = req.query;
-            const livro = controleLivro.excluir(Number(codigo));
-            res.status(200).json(livro);
-        } catch (error) {
-            res.status(500).end("Execução ocorrida no servidor.");
-        }
+      const {codigo} = req.query;
+      controleLivro.excluir(Number(codigo));
+      res.status(200).json({message: 'Livro excluído com sucesso!'});
     } else {
-    res.status(405).end("Método não permitido.");
+      res.setHeader('Allow', ['DELETE']);
+      res.status(405).end("Método não permitido");
     }
-}
+  } catch (error) {
+    res.status(500).json({ error: "Erro no Servidor"});
+  }
+};
